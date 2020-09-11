@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ModalView from "../ModalView";
-import { gethealth } from "../../api/news";
+import { getscience } from "../../api/news";
 import DataItem from "../DataItem";
 import { Container, Content, List } from "native-base";
 import { Text, View, ActivityIndicator } from "react-native";
 
-export default function tabThree() {
+export default function tabFour() {
   const [isLoading, setIsLoading] = useState(true);
   const [articles, setArticles] = useState([]);
   const [viewModal, setViewModal] = useState(false);
@@ -22,7 +22,7 @@ export default function tabThree() {
   };
   useEffect(() => {
     async function get_articles() {
-      setArticles(await gethealth());
+      setArticles(await getscience());
       setIsLoading(false);
     }
     get_articles();

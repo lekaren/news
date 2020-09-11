@@ -1,14 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Content, List } from 'native-base';
-import { View, ActivityIndicator, Text } from 'react-native';
-import { getArticles } from '../../api/news';
-import DataItem from '../DataItem';
+import React, { useState, useEffect } from "react";
+import ModalView from "../ModalView";
+import { getArticles } from "../../api/news";
+import DataItem from "../DataItem";
+import { Container, Content, List } from "native-base";
+import { Text, View, ActivityIndicator } from "react-native";
 
-function TabOne () {
-
-	// 로딩여부 와 뉴스 정보를 state 에 담는다.
+export default function tabOne() {
   const [isLoading, setIsLoading] = useState(true);
   const [articles, setArticles] = useState([]);
+  const [viewModal, setViewModal] = useState(false);
+  const [modalArticleData, setModalArticleData] = useState({});
+  // 모달열기
+  const handleModalOpen = (articleData) => {
+    setViewModal(true);
+    setModalArticleData(articleData);
+  };
+  // 모달닫기
+  const handleModalClose = () => {
+    setViewModal(false);
+    setModalArticleData({});
+  };
+  useEffect(() => {
+    async function get_articles() {
+      setArticles(await getArticles());
+      setIsLoading(false);
+    }
+    get_articles();
+  }, []);
   const pageView = isLoading ? (
     <View>
       <ActivityIndicator animating={isLoading} size="large" />
@@ -18,27 +36,18 @@ function TabOne () {
     <List
       dataArray={articles}
       renderRow={(article) => {
-        return <DataItem article={article} />
+        return <DataItem article={article} handleModalOpen={handleModalOpen} />;
       }}
     />
   );
-  // useEffect 를 통해 초기 랜더링 될때만 데이터를 호출한다.
-  useEffect(() => {
-    async function get_articles () {
-      setArticles(await getArticles());
-      setIsLoading(false);
-    }
-    
-    get_articles();
-  }, []);
-  
-  return ( 
+  return (
     <Container>
-        <Content>
-          {pageView}
-        </Content>
-      </Container>
+      <Content>{pageView}</Content>
+      <ModalView
+        viewModal={viewModal}
+        articleData={modalArticleData}
+        onClose={handleModalClose}
+      />
+    </Container>
   );
-};
-
-export default TabOne;
+}
