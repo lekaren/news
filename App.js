@@ -1,12 +1,13 @@
-import React, {useEffect,useState} from 'react';
-import TabScreen from './Components/TabScreen';
+import React, { useEffect, useState } from "react";
+import { Text, View, StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
-import {Text} from "react-native"
+import TabScreen from "./Components/TabScreen";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 export default function App() {
-  const [loading, setLoading] = useState(true)
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
@@ -16,16 +17,27 @@ export default function App() {
       });
     };
     loadFont().then(() => {
-      setLoading(false)
-    })
+      setIsLoading(false);
+    });
   }, []);
-if (!loading) {
-  return (
-    <TabScreen />
-  );
-}else {
-  return <Text>에러</Text>
   
-}
-    
+  if (!isLoading) {
+    return (
+      <Provider store={store}>
+        <View style={styles.container}>
+          <TabScreen />
+        </View>
+      </Provider>
+    );
+  } else {
+    return <Text></Text>;
   }
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
