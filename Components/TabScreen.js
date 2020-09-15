@@ -5,7 +5,7 @@ import TabTwo from './Tabs/tabTwo';
 import TabThree from './Tabs/tabThree';
 import TabFour from './Tabs/tabFour';
 
-function TabsExample (){
+export default function TabScreen (){
   return (
     <Container>
       <Header hasTabs>
@@ -30,5 +30,3 @@ function TabsExample (){
     </Container>
   );
 }
-
-export default TabsExample
