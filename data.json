@@ -1,14 +1,20 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "email": "test@playauto.com",
-            "password": "12345"
-        },
-        {
-            "id": 2,
-            "email": "rony@playauto.com",
-            "password": "1111"
-        }
-    ]
+  "users": [
+    {
+      "id": 1,
+      "email": "test@playauto.com",
+      "password": "12345"
+    },
+    {
+      "id": 2,
+      "email": "rony@playauto.com",
+      "password": "1111"
+    },
+    {
+      "name": "ab",
+      "email": "ab",
+      "password": "11",
+      "id": 3
+    }
+  ]
 }
