@@ -7,3 +7,11 @@ export const getUsers = async () => {
     throw err;
   }
 };
+
+export const createUser = async (userInfo) => {
+  try {
+		await axios.post('http://10.0.2.2:4000/users', userInfo);
+  } catch (error) {
+    throw error;
+  }
+};

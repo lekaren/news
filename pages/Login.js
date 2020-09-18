@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import * as userApi from "../api/user";
+import { Actions } from 'react-native-router-flux';
 
 function Login () {
   const [isClick, setIsClick] = useState(false);
@@ -8,6 +9,26 @@ function Login () {
       email: '',
       password: ''
   });
+     // 회원등록 페이지 이동.
+  const moveSignup = () => {
+    Actions.register();
+  };
+  
+    // 로그인 클릭
+  const onSubmit = async () => {
+    setClicked(true);
+    
+    if (email && password) {
+      const userList = await userApi.getUsers();
+      const user = userList.filter(user => user.email === email && user.password === password);
+
+      if (!user.length) {
+        Alert.alert('실패', '입력한 정보와 일치하는 사용자정보가 없습니다.');
+      } else {
+				Actions.newsList();
+      }
+    }    
+  };
 
   const loginAction = async() => {
     setIsClick(true);
@@ -21,7 +42,11 @@ function Login () {
         });
 
         if (matchData.length){
-            Alert.alert('성공', '로그인이 완료되었습니다.');
+            Alert.alert('성공', '로그인이 완료되었습니다.',[
+                {
+                    onPress: () => Actions.newsList()
+                }
+            ]);
         } else {
             Alert.alert('실패', '일치하는 사용자 정보가 없습니다.');
         }
@@ -69,8 +94,14 @@ function Login () {
         null
         }
         <TouchableOpacity style={styles.button} onPress={loginAction}>
-            <Text style={styles.buttonText}>Login</Text></TouchableOpacity>
+            <Text style={styles.buttonText} type={onSubmit}>Login</Text></TouchableOpacity>
     </View>
+    <View style={styles.bottomText}>
+        <Text>Don't have account yet?</Text>
+        <TouchableOpacity onPress={moveSignup}>
+          <Text style={{ paddingLeft: 10 }}>SignUp</Text>
+        </TouchableOpacity>        
+      </View>
     </>
   );
 };
@@ -114,6 +145,12 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: '900',
         marginTop: 15
+    },
+    bottomText: {
+        flexGrow: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });
 
